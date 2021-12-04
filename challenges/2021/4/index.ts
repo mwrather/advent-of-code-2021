@@ -4,8 +4,10 @@ const [calls, ...boards] = getInput('2021', '4')
   .split('\n\n')
   .map((row, i) =>
     i === 0
-      ? row.split(',')
-      : row
+      ? // calls
+        row.split(',')
+      : // boards
+        row
           .split('\n')
           .map((nums) => nums.split(' ').filter((cell) => cell !== ''))
           .filter((row) => row.length !== 0)
@@ -42,7 +44,7 @@ function calculateScore(winningBoard: string[][], call: number) {
   return (
     call *
     winningBoard
-      .reduce((a, b) => a.concat(b), [])
+      .flat()
       .filter((cell) => cell !== 'X')
       .map(Number)
       .reduce((a, b) => a + b)
@@ -50,13 +52,11 @@ function calculateScore(winningBoard: string[][], call: number) {
 }
 
 function part1(calls: string[], boards: string[][][]) {
-  let markedBoards = boards;
-  let winner: string[][] | undefined;
-  for (let i = 0; i < calls.length; i++) {
-    markedBoards = markBoards(markedBoards, calls[i]);
-    winner = findWinner(markedBoards);
+  for (const call of calls) {
+    boards = markBoards(boards, call);
+    const winner = findWinner(boards);
     if (winner !== undefined) {
-      return calculateScore(winner, Number(calls[i]));
+      return calculateScore(winner, Number(call));
     }
   }
 }
