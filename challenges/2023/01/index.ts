@@ -18,10 +18,16 @@ zoneight234
 const processInput = (data: string): string[] =>
   data.trim().split('\n');
 
+const getFirstAndLastDigit = (data:string) => {
+  const digits = data.replace(/\D/g, '');
+  return Number.parseInt(
+    digits[0] + digits[digits.length - 1]
+  );
+}
+
 function part1(data: string) {
   return processInput(data)
-    .map(line => line.replace(/\D/g, '').split(''))
-    .map(line => line[0] + line[line.length - 1]).map(n => Number.parseInt(n))
+    .map(getFirstAndLastDigit)
     .reduce((a, b) => a + b, 0);
 }
 
@@ -54,8 +60,7 @@ const convertTextDigits = (line: string): string => {
 function part2(data: string) {
   return processInput(data)
     .map(convertTextDigits)
-    .map(line => line.replace(/\D/g, ''))
-    .map(line => line[0] + line[line.length - 1]).map(n => Number.parseInt(n))
+    .map(getFirstAndLastDigit)
     .reduce((a, b) => a + b, 0);
 }
 
